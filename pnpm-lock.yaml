@@ -12,8 +12,8 @@ importers:
         specifier: 1.0.0-rc.22
         version: 1.0.0-rc.22(@algolia/client-search@5.21.0)(postcss@8.5.3)(search-insights@2.9.0)
       vitepress-plugin-auto-sidebar:
-        specifier: ^1.3.5
-        version: 1.3.5
+        specifier: ^1.4.0
+        version: 1.4.0
 
 packages:
 
@@ -479,8 +479,8 @@ packages:
       terser:
         optional: true
 
-  vitepress-plugin-auto-sidebar@1.3.5:
-    resolution: {integrity: sha512-drC4CuJlE1IQFP8mv8BRMKZpHLFjJTdBw9C9TJ2VWyl6BOvIs157HCaDvcP/xM8fviG+mjSe3MJ2Z+wrsV4E4w==}
+  vitepress-plugin-auto-sidebar@1.4.0:
+    resolution: {integrity: sha512-fxVo4WUc9QiBt9XiveBEUi38qZ9TBOj2fFUCRZJIlp+FVmQVYh0bOxE802b1UGouQGe8XutkXl0z0Vbm/++fQg==}
     engines: {node: '>=18'}
 
   vitepress@1.0.0-rc.22:
@@ -949,7 +949,7 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  vitepress-plugin-auto-sidebar@1.3.5:
+  vitepress-plugin-auto-sidebar@1.4.0:
     dependencies:
       front-matter: 4.0.2
 

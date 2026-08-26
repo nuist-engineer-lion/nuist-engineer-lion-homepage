@@ -18,11 +18,11 @@ export default defineConfig({
     {
       "/docs/":[{
         text: "修机日志",
-        items: getSidebar({ contentRoot: '/', contentDirs:["docs"],collapsible: false, collapsed: false })
+        items: getSidebar({ contentRoot: '.', contentDirs:["docs"],collapsible: false, collapsed: false })
       }],
       "/team/":[{
         text: "历届部长团",
-        items: getSidebar({ contentRoot: '/', contentDirs:["team"],collapsible: false, collapsed: false })
+        items: getSidebar({ contentRoot: '.', contentDirs:["team"],collapsible: false, collapsed: false })
       }]
     },
     // getSidebar({ contentRoot: '/', contentDirs:["team","docs"],collapsible: false, collapsed: false }),
