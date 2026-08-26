@@ -41,6 +41,7 @@ jobs:
         run: |
           npm install -g corepack@latest
           corepack enable
+          pnpm approve-builds --yes
           pnpm i
           pnpm build
 
