@@ -11,6 +11,9 @@
   "keywords": [],
   "author": "",
   "license": "AGPL-3.0-or-later",
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "vue-demi"]
+  },
   "dependencies": {
     "vitepress": "1.0.0-rc.22",
     "vitepress-plugin-auto-sidebar": "^1.4.0"
