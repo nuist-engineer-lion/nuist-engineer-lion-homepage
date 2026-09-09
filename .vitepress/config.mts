@@ -4,15 +4,16 @@ import { getSidebar } from 'vitepress-plugin-auto-sidebar'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Nuist海上修机师",
-  description: "Archive Station",
+  title: "海上修机师",
+  description: "NUIST 校科协信息技术部 · 海上修机师：通知动态、修机文档与档案馆",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: '/assets/logo.svg',
     nav: [
       { text: '修机文档', link: '/docs/' },
-      { text: '历届部长团', link: '/team/2020' },
-      {text: '成员资源仓库', link: '/store/' },
+      { text: '最新通知', link: '/notices/' },
+      { text: '历届部长团', link: '/archive/team/2023' },
+      { text: '成员资源仓库', link: '/archive/store/' },
     ],
     sidebar:
     {
@@ -20,25 +21,19 @@ export default defineConfig({
         text: "修机日志",
         items: getSidebar({ contentRoot: '.', contentDirs:["docs"],collapsible: false, collapsed: false })
       }],
-      "/team/":[{
+      "/archive/team/":[{
         text: "历届部长团",
-        items: getSidebar({ contentRoot: '.', contentDirs:["team"],collapsible: false, collapsed: false })
+        items: getSidebar({ contentRoot: '.', contentDirs:["archive/team"],collapsible: false, collapsed: false })
       }]
     },
-    // getSidebar({ contentRoot: '/', contentDirs:["team","docs"],collapsible: false, collapsed: false }),
-
-    // sidebar: [
-    //   {
-    //     text: 'Examples',
-    //     items: [
-    //       { text: 'Markdown Examples', link: '/markdown-examples' },
-    //       { text: 'Runtime API Examples', link: '/api-examples' }
-    //     ]
-    //   }
-    // ],
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/nuist-engineer-lion/nuist-engineer-lion.github.io' }
-    ]
+    ],
+
+    footer: {
+      message: '基于 AGPL-3.0 协议开源',
+      copyright: 'Copyright © 2016-present 海上修机师 · NUIST 校科协信息技术部'
+    }
   }
 })
