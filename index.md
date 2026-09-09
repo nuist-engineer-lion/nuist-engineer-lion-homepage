@@ -46,9 +46,7 @@ features:
 
 </section>
 
-<!-- 最新通知：自动读取 notices/entries/ 目录，机器人通过 PR 新增文件即可更新 -->
-
-<NoticeBubble />
+<!-- 最新通知：全站右下角浮动气泡（见 .vitepress/theme/components/NoticeBubble.vue），自动读取 notices/entries/，机器人通过 PR 新增文件即可更新 -->
 
 <!-- 联系方式：二维码为 160×160 占位图，替换 public/assets/qr/ 下同名文件即可 -->
 

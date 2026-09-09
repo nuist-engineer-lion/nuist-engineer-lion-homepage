@@ -1,7 +1,15 @@
 <script setup>
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vitepress'
 import { data as notices } from '../notices.data.mts'
 
+// 全站右下角浮动通知气泡：展示最新一条通知
+// 关闭状态记录在 localStorage，同一通知只弹一次；新通知合入后自动重新弹出
+const route = useRoute()
 const latest = notices[0]
+const DISMISS_KEY = 'notice-dismissed-url'
+
+const visible = ref(false)
 
 function fmt(d) {
   return new Date(d).toLocaleDateString('zh-CN', {
@@ -10,67 +18,67 @@ function fmt(d) {
     day: 'numeric'
   })
 }
+
+onMounted(() => {
+  visible.value = !!latest && localStorage.getItem(DISMISS_KEY) !== latest.url
+})
+
+function dismiss() {
+  visible.value = false
+  if (latest) {
+    try {
+      localStorage.setItem(DISMISS_KEY, latest.url)
+    } catch {
+      /* 隐私模式下忽略 */
+    }
+  }
+}
 </script>
 
 <template>
-  <section class="notice-bubble-wrap">
-    <a v-if="latest" :href="latest.url" class="notice-bubble">
+  <transition name="notice-bubble-fade">
+    <div
+      v-if="visible && latest && !route.path.startsWith('/notices')"
+      class="notice-bubble"
+      role="status"
+    >
       <div class="notice-bubble-head">
         <span class="notice-bubble-badge">最新通知</span>
         <time class="notice-bubble-date">{{ fmt(latest.frontmatter.date) }}</time>
+        <button class="notice-bubble-close" aria-label="关闭通知" @click="dismiss">×</button>
       </div>
-      <p class="notice-bubble-title">{{ latest.frontmatter.title }}</p>
-      <div v-if="latest.excerpt" class="notice-bubble-excerpt" v-html="latest.excerpt" />
-      <span class="notice-bubble-tail" aria-hidden="true" />
-    </a>
-    <div v-else class="notice-bubble notice-bubble--empty">
-      <div class="notice-bubble-head">
-        <span class="notice-bubble-badge">最新通知</span>
-      </div>
-      <p class="notice-bubble-title">暂无通知</p>
+      <a :href="latest.url" class="notice-bubble-link">
+        <p class="notice-bubble-title">{{ latest.frontmatter.title }}</p>
+        <div v-if="latest.excerpt" class="notice-bubble-excerpt" v-html="latest.excerpt" />
+      </a>
       <span class="notice-bubble-tail" aria-hidden="true" />
     </div>
-    <a class="notice-bubble-more" href="/notices/">查看全部通知 →</a>
-  </section>
+  </transition>
 </template>
 
 <style scoped>
-.notice-bubble-wrap {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 0 24px;
-  text-align: center;
-}
-
 .notice-bubble {
-  position: relative;
-  display: block;
-  margin: 0 auto 26px;
-  padding: 18px 22px;
-  text-align: left;
-  background: var(--vp-c-bg-soft);
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 40;
+  width: 320px;
+  max-width: calc(100vw - 32px);
+  padding: 14px 16px;
+  background: var(--vp-c-bg);
   border: 1px solid var(--vp-c-divider);
   border-radius: 10px;
-  transition: border-color 0.25s, box-shadow 0.25s;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
 }
 
-.notice-bubble:hover {
-  border-color: var(--vp-c-brand-1);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-}
-
-.notice-bubble:hover .notice-bubble-title {
-  color: var(--vp-c-brand-1);
-}
-
-/* 方形气泡尾巴：一个旋转 45° 的小方块 */
+/* 方形气泡尾巴：旋转 45° 的小方块 */
 .notice-bubble-tail {
   position: absolute;
-  left: 30px;
+  right: 34px;
   bottom: -7px;
   width: 12px;
   height: 12px;
-  background: var(--vp-c-bg-soft);
+  background: var(--vp-c-bg);
   border-right: 1px solid var(--vp-c-divider);
   border-bottom: 1px solid var(--vp-c-divider);
   transform: rotate(45deg);
@@ -80,13 +88,11 @@ function fmt(d) {
 .notice-bubble-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 10px;
+  gap: 10px;
+  margin-bottom: 8px;
 }
 
 .notice-bubble-badge {
-  display: inline-block;
   padding: 2px 10px;
   border-radius: 4px;
   font-size: 13px;
@@ -96,37 +102,83 @@ function fmt(d) {
 }
 
 .notice-bubble-date {
-  font-size: 13px;
+  flex: 1;
+  font-size: 12px;
   color: var(--vp-c-text-3);
+  text-align: right;
+}
+
+.notice-bubble-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--vp-c-text-3);
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+
+.notice-bubble-close:hover {
+  color: var(--vp-c-text-1);
+  background: var(--vp-c-bg-soft);
+}
+
+.notice-bubble-link {
+  display: block;
+  text-decoration: none;
 }
 
 .notice-bubble-title {
-  margin: 0 0 6px;
-  font-size: 18px;
+  margin: 0 0 4px;
+  font-size: 15px;
   font-weight: 600;
   line-height: 1.5;
   color: var(--vp-c-text-1);
   transition: color 0.25s;
 }
 
-.notice-bubble-excerpt {
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--vp-c-text-2);
-}
-
-.notice-bubble-excerpt :deep(p) {
-  margin: 0;
-}
-
-.notice-bubble-more {
-  display: inline-block;
-  font-size: 14px;
-  font-weight: 500;
+.notice-bubble-link:hover .notice-bubble-title {
   color: var(--vp-c-brand-1);
 }
 
-.notice-bubble-more:hover {
-  text-decoration: underline;
+.notice-bubble-excerpt {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--vp-c-text-2);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.notice-bubble-excerpt p {
+  margin: 0;
+}
+
+.notice-bubble-fade-enter-active,
+.notice-bubble-fade-leave-active {
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.notice-bubble-fade-enter-from,
+.notice-bubble-fade-leave-to {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+@media (max-width: 560px) {
+  .notice-bubble {
+    right: 16px;
+    bottom: 16px;
+    width: calc(100vw - 32px);
+  }
 }
 </style>
