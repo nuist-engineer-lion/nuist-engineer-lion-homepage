@@ -17,7 +17,9 @@
 
 /* ===== 首页：整页滑动（每屏一页，scroll-snap 吸附） ===== */
 html:has(.fp-root) {
-  scroll-snap-type: y mandatory;
+  /* proximity 而非 mandatory：无级滚轮/惯性滚动不会被强制吸附反复拽回
+     （滚轮的小增量另有 homePaging.ts 做翻页兜底） */
+  scroll-snap-type: y proximity;
   /* 导航栏是 fixed 覆盖层（高 --vp-nav-height），吸附点整体下移，否则每屏标题会被压住 */
   scroll-padding-top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px));
   scroll-behavior: smooth;
@@ -26,7 +28,6 @@ html:has(.fp-root) {
 /* 主屏（主题 hero）也算一页：一起参与吸附，纵向也收紧一些 */
 .VPHero {
   scroll-snap-align: start;
-  scroll-snap-stop: always;
   padding-top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px) + 40px);
   padding-bottom: 40px;
 }
@@ -55,7 +56,6 @@ html:has(.fp-root) {
   align-items: center;
   justify-content: center;
   scroll-snap-align: start;
-  scroll-snap-stop: always;
   padding: 44px 24px;
   text-align: center;
 }
@@ -414,13 +414,10 @@ html:has(.fp-root) {
   }
 }
 
-/* ===== 吸附只在「每一页都装得下」的视口启用 =====
-   吸附区一旦高过吸附口，浏览器会额外生成一个「底边对齐」的吸附点，
-   表现为 我们是谁 那一屏里多出一次吸附，故窄屏/矮屏直接退回普通滚动 */
-@media (max-width: 1149px), (max-height: 700px) {
-  html:has(.fp-root) {
-    scroll-snap-type: none;
-  }
+/* 只要有任意一屏装不下（手机上的 我们是谁 / 联系我们 就是），整页退回普通滚动：
+   由 homePaging.ts 在 html 上打 .fp-snap-off。半吸附半自由滚动的体感更差 */
+html:has(.fp-root).fp-snap-off {
+  scroll-snap-type: none;
 }
 
 /* ===== 窄屏：收紧内边距 ===== */
@@ -437,4 +434,37 @@ html:has(.fp-root) {
     width: 140px;
     height: 140px;
   }
+}
+
+/* ===== 通知详情页：标题与日期（经 doc-before 插槽渲染，不在 .vp-doc 容器内，故自带排版） ===== */
+.notice-meta {
+  margin: 0 0 20px;
+}
+
+.notice-back {
+  display: inline-block;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--vp-c-brand-1);
+  text-decoration: none;
+}
+
+.notice-back:hover {
+  text-decoration: underline;
+}
+
+.notice-meta-title {
+  margin: 0 0 8px;
+  font-size: 28px;
+  line-height: 40px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--vp-c-text-1);
+}
+
+.notice-meta-date {
+  display: block;
+  font-size: 14px;
+  color: var(--vp-c-text-3);
 }

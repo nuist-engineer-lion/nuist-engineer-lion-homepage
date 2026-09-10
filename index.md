@@ -1,5 +1,8 @@
 ---
 layout: home
+title: 海上修机师 · NUIST 校园电脑义修
+titleTemplate: false
+description: 海上修机师是面向南京信息工程大学全校师生的电脑义修组织：系统安装与重装、蓝屏死机等故障排查、清灰保养与硬件升级，并提供修机文档、通知动态与档案馆。
 
 hero:
   name: "NUIST"
@@ -10,8 +13,8 @@ hero:
     alt: 海上修机师
   actions:
     - theme: brand
-      text: 最新通知
-      link: /notices/
+      text: 联系我们
+      link: '#contact'
     - theme: alt
       text: 修机文档
       link: /docs/
@@ -115,10 +118,10 @@ import NoticeList from './.vitepress/theme/components/NoticeList.vue'
 
 <section class="fp-slide fp-notices">
   <div class="fp-inner">
-    <h2>最新动态</h2>
+    <h2>通知中心</h2>
     <p class="fp-desc">活动预告、服务安排与组织动态。</p>
     <NoticeList :limit="3" />
-    <a class="fp-more" href="/notices/">查看全部通知 →</a>
+    <a class="fp-more" href="/notices/">进入通知中心 →</a>
   </div>
 </section>
 
