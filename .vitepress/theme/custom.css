@@ -468,3 +468,14 @@ html:has(.fp-root).fp-snap-off {
   font-size: 14px;
   color: var(--vp-c-text-3);
 }
+
+/* ===== 页脚：许可证与源码入口（AGPL 第 13 条） ===== */
+.VPFooter .message a {
+  color: var(--vp-c-brand-1);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.VPFooter .message a:hover {
+  text-decoration: underline;
+}

@@ -98,11 +98,13 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/nuist-engineer-lion/nuist-engineer-lion.github.io' }
+      { icon: 'github', link: 'https://github.com/nuist-engineer-lion/nuist-engineer-lion-homepage' }
     ],
 
     footer: {
-      message: '基于 AGPL-3.0 协议开源',
+      // AGPL 第 13 条：作为网络服务，需向访问者提供获取对应源代码的入口
+      message:
+        '本站代码以 <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noreferrer">AGPL-3.0</a> 协议开源 · <a href="https://github.com/nuist-engineer-lion/nuist-engineer-lion-homepage" target="_blank" rel="noreferrer">获取源码</a>',
       copyright: `Copyright © 2016-${buildYear} 海上修机师 · NUIST`
     }
   }
