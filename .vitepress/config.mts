@@ -5,7 +5,7 @@ import { getSidebar } from 'vitepress-plugin-auto-sidebar'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "海上修机师",
-  description: "NUIST 校科协信息技术部 · 海上修机师：通知动态、修机文档与档案馆",
+  description: "海上修机师 · 通知动态、修机文档与档案馆",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: '/assets/logo.svg',
@@ -33,7 +33,7 @@ export default defineConfig({
 
     footer: {
       message: '基于 AGPL-3.0 协议开源',
-      copyright: 'Copyright © 2016-present 海上修机师 · NUIST 校科协信息技术部'
+      copyright: 'Copyright © 2016-present 海上修机师 · NUIST'
     }
   }
 })
