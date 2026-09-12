@@ -1,0 +1,71 @@
+name: Validate Notices
+
+on:
+  pull_request:
+    paths:
+      - "notices/entries/**"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate notice entries
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate changed notice files
+        run: |
+          BASE="${{ github.event.pull_request.base.sha }}"
+          CHANGED="$(git diff --name-only --diff-filter=ACMR "$BASE" HEAD -- notices/entries/)"
+          if [ -z "$CHANGED" ]; then
+            echo "没有新增或修改的通知文件（仅删除或无改动），跳过校验。"
+            exit 0
+          fi
+          echo "待校验文件："
+          echo "$CHANGED"
+          python3 - $CHANGED <<'PYEOF'
+          import re
+          import sys
+          from pathlib import Path
+
+          NAME_RE = re.compile(r"^\d{4}-\d{2}-\d{2}-[A-Za-z0-9-]+\.md$")
+          FM_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*\n", re.S)
+
+          failures = []
+          for arg in sys.argv[1:]:
+              p = Path(arg)
+              problems = []
+              if not p.exists():
+                  failures.append(f"{p}: 文件不存在")
+                  continue
+              text = p.read_text(encoding="utf-8")
+              if not NAME_RE.match(p.name):
+                  problems.append("文件名需为 YYYY-MM-DD-slug.md（slug 用拼音或英文）")
+              m = FM_RE.match(text)
+              if not m:
+                  problems.append("缺少 frontmatter（文件需以 --- 包裹的 YAML 开头）")
+              else:
+                  fm = m.group(1)
+                  t = re.search(r"^title:\s*(\S.*)$", fm, re.M)
+                  d = re.search(r"^date:\s*(\d{4}-\d{2}-\d{2})\s*$", fm, re.M)
+                  if not t or not t.group(1).strip().strip("'\""):
+                      problems.append("frontmatter 缺少必填的 title")
+                  if not d:
+                      problems.append("frontmatter 缺少必填的 date（格式 YYYY-MM-DD）")
+                  elif p.name[:10] != d.group(1):
+                      problems.append(f"文件名日期 {p.name[:10]} 与 frontmatter date {d.group(1)} 不一致")
+              if problems:
+                  failures.append(f"{p}:\n" + "\n".join(f"  - {x}" for x in problems))
+
+          if failures:
+              for f in failures:
+                  print(f)
+              print(f"::error::通知文件校验未通过：{len(failures)} 个文件有问题")
+              sys.exit(1)
+          print(f"通知文件校验通过：{len(sys.argv) - 1} 个文件")
+          PYEOF
