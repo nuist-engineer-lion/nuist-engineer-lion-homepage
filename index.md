@@ -125,37 +125,53 @@ import NoticeList from './.vitepress/theme/components/NoticeList.vue'
   </div>
 </section>
 
-<!-- 联系方式：二维码为占位图，替换 public/assets/qr/ 下同名文件即可 -->
+<!-- 联系方式：二维码为 public/assets/qr/ 下的 SVG；卡片点击跳转对应二维码里的 QQ 加群/加好友链接 -->
 
 <section class="fp-slide fp-contact" id="contact">
   <div class="fp-inner">
     <h2>联系我们</h2>
-    <p class="fp-desc">义修预约、活动报名、日常技术求助，均可扫码或加群咨询。</p>
+    <p class="fp-desc">义修预约、活动报名、日常技术求助，均可加 QQ 或扫码咨询。</p>
     <div class="contact-grid">
 
-<figure class="contact-card">
-  <img src="/assets/qr/official.svg" width="160" height="160" alt="微信公众号二维码" loading="lazy" />
-  <figcaption>
-    <strong>微信公众号</strong>
-    <span>关注获取最新动态</span>
-  </figcaption>
-</figure>
+<a class="contact-link" href="https://qm.qq.com/q/8s9nl8vwti" target="_blank" rel="noreferrer" aria-label="添加 NUIST海上修机师 QQ：2724867836">
+  <figure class="contact-card">
+    <img src="/assets/qr/qq-account.svg" width="160" height="160" alt="NUIST海上修机师 QQ 二维码" loading="lazy" />
+    <figcaption>
+      <strong>NUIST海上修机师</strong>
+      <span>QQ：2724867836</span>
+    </figcaption>
+  </figure>
+</a>
 
-<figure class="contact-card">
-  <img src="/assets/qr/recruit.svg" width="160" height="160" alt="招新群二维码" loading="lazy" />
-  <figcaption>
-    <strong>招新群</strong>
-    <span>群号：待补充</span>
-  </figcaption>
-</figure>
+<a class="contact-link" href="https://qm.qq.com/q/8UMiXCQ8U0" target="_blank" rel="noreferrer" aria-label="加入修机师交流群：152300121">
+  <figure class="contact-card">
+    <img src="/assets/qr/group-152300121.svg" width="160" height="160" alt="修机师交流群二维码" loading="lazy" />
+    <figcaption>
+      <strong>修机师交流群</strong>
+      <span>群号：152300121</span>
+    </figcaption>
+  </figure>
+</a>
 
-<figure class="contact-card">
-  <img src="/assets/qr/notice.svg" width="160" height="160" alt="通知群二维码" loading="lazy" />
-  <figcaption>
-    <strong>通知群</strong>
-    <span>群号：待补充</span>
-  </figcaption>
-</figure>
+<a class="contact-link" href="https://qm.qq.com/q/XFltP281Ow" target="_blank" rel="noreferrer" aria-label="加入活动通知 1 群：913447182">
+  <figure class="contact-card">
+    <img src="/assets/qr/group-913447182.svg" width="160" height="160" alt="活动通知 1 群二维码" loading="lazy" />
+    <figcaption>
+      <strong>活动通知 1 群</strong>
+      <span>群号：913447182</span>
+    </figcaption>
+  </figure>
+</a>
+
+<a class="contact-link" href="https://qm.qq.com/q/ofXG47TMxa" target="_blank" rel="noreferrer" aria-label="加入活动通知 2 群：1087312046">
+  <figure class="contact-card">
+    <img src="/assets/qr/group-1087312046.svg" width="160" height="160" alt="活动通知 2 群二维码" loading="lazy" />
+    <figcaption>
+      <strong>活动通知 2 群</strong>
+      <span>群号：1087312046</span>
+    </figcaption>
+  </figure>
+</a>
 
 </div>
   </div>

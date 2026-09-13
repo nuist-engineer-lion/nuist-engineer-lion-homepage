@@ -318,6 +318,17 @@ html:has(.fp-root) {
   margin: 0 0 12px;
 }
 
+.contact-link {
+  display: block;
+  text-decoration: none;
+  border-radius: 12px;
+}
+
+.contact-link:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
+
 .contact-card {
   width: 200px;
   margin: 0;
@@ -325,6 +336,12 @@ html:has(.fp-root) {
   background: var(--vp-c-bg);
   border: 1px solid var(--vp-c-divider);
   border-radius: 12px;
+  transition: border-color 0.25s, transform 0.25s;
+}
+
+.contact-link:hover .contact-card {
+  border-color: var(--vp-c-brand-1);
+  transform: translateY(-2px);
 }
 
 .vp-doc .contact-card {
@@ -402,6 +419,11 @@ html:has(.fp-root) {
 @media (min-width: 1150px) {
   .fp-about .fp-inner {
     max-width: 1120px;
+  }
+
+  /* 联系我们 4 张卡片排一行（4×200 + 3×28 = 884） */
+  .fp-contact .fp-inner {
+    max-width: 940px;
   }
 
   .svc-grid {

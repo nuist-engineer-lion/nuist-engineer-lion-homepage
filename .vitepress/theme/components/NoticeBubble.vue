@@ -1,15 +1,67 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vitepress'
 import { data as notices } from '../notices.data.mts'
 
 // 全站右下角浮动通知气泡：展示最新一条通知
 // 关闭状态记录在 localStorage，同一通知只弹一次；新通知合入后自动重新弹出
+// 移动端支持横向侧滑消除：拖动跟手，超过阈值沿方向飞出，否则回弹
 const route = useRoute()
 const latest = notices[0]
 const DISMISS_KEY = 'notice-dismissed-url'
 
 const visible = ref(false)
+const dragX = ref(0)
+const dragging = ref(false)
+
+// 侧滑判定阈值（px）：超过视为滑动消除，小于则回弹
+const SWIPE_THRESHOLD = 56
+// 触发横向拖动的最小位移：避免与纵向滚动、普通点按冲突
+const AXIS_LOCK = 8
+
+let startX = 0
+let startY = 0
+let axis = null
+
+const bubbleStyle = computed(() => ({
+  transform: `translateX(${dragX.value}px)`,
+  transition: dragging.value ? 'none' : 'transform 0.2s ease'
+}))
+
+function onTouchStart(e) {
+  const t = e.touches[0]
+  startX = t.clientX
+  startY = t.clientY
+  axis = null
+  dragging.value = true
+}
+
+function onTouchMove(e) {
+  if (!dragging.value) return
+  const t = e.touches[0]
+  const dx = t.clientX - startX
+  const dy = t.clientY - startY
+  if (axis === null && (Math.abs(dx) > AXIS_LOCK || Math.abs(dy) > AXIS_LOCK)) {
+    axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y'
+  }
+  if (axis === 'x') {
+    dragX.value = dx
+  }
+}
+
+function onTouchEnd() {
+  dragging.value = false
+  if (Math.abs(dragX.value) >= SWIPE_THRESHOLD) {
+    // 沿滑动方向飞出后再关闭，500ms 后复位偏移供下次弹出
+    dragX.value = dragX.value > 0 ? 400 : -400
+    setTimeout(() => {
+      dismiss()
+      dragX.value = 0
+    }, 200)
+  } else {
+    dragX.value = 0
+  }
+}
 
 function fmt(d) {
   return new Date(d).toLocaleDateString('zh-CN', {
@@ -41,6 +93,11 @@ function dismiss() {
       v-if="visible && latest && !route.path.startsWith('/notices')"
       class="notice-bubble"
       role="status"
+      :style="bubbleStyle"
+      @touchstart.passive="onTouchStart"
+      @touchmove.passive="onTouchMove"
+      @touchend="onTouchEnd"
+      @touchcancel="onTouchEnd"
     >
       <div class="notice-bubble-head">
         <span class="notice-bubble-badge">最新通知</span>
@@ -69,6 +126,8 @@ function dismiss() {
   border: 1px solid var(--vp-c-divider);
   border-radius: 10px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  /* 纵向仍交给页面滚动，横向手势留给侧滑消除 */
+  touch-action: pan-y;
 }
 
 /* 方形气泡尾巴：旋转 45° 的小方块 */
