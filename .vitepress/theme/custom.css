@@ -369,6 +369,16 @@ html:has(.fp-root) {
   color: var(--vp-c-text-3);
 }
 
+/* 「点击加入」提示行：品牌色小字，提示卡片可点 */
+.contact-card .contact-join {
+  font-size: 12px;
+  color: var(--vp-c-brand-1);
+}
+
+.contact-link:hover .contact-join {
+  text-decoration: underline;
+}
+
 /* ===== 服务卡片（并入首页「我们是谁」） ===== */
 .svc-grid {
   display: flex;

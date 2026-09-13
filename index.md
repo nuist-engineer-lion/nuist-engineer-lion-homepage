@@ -139,6 +139,7 @@ import NoticeList from './.vitepress/theme/components/NoticeList.vue'
     <figcaption>
       <strong>NUIST海上修机师</strong>
       <span>QQ：2724867836</span>
+    <span class="contact-join">点击加入</span>
     </figcaption>
   </figure>
 </a>
@@ -149,6 +150,7 @@ import NoticeList from './.vitepress/theme/components/NoticeList.vue'
     <figcaption>
       <strong>修机师交流群</strong>
       <span>群号：152300121</span>
+    <span class="contact-join">点击加入</span>
     </figcaption>
   </figure>
 </a>
@@ -159,6 +161,7 @@ import NoticeList from './.vitepress/theme/components/NoticeList.vue'
     <figcaption>
       <strong>活动通知 1 群</strong>
       <span>群号：913447182</span>
+    <span class="contact-join">点击加入</span>
     </figcaption>
   </figure>
 </a>
@@ -169,6 +172,7 @@ import NoticeList from './.vitepress/theme/components/NoticeList.vue'
     <figcaption>
       <strong>活动通知 2 群</strong>
       <span>群号：1087312046</span>
+    <span class="contact-join">点击加入</span>
     </figcaption>
   </figure>
 </a>
