@@ -21,6 +21,9 @@ hero:
     - theme: alt
       text: 档案馆
       link: /archive/
+    - theme: alt
+      text: 学习资料库
+      link: '#links'
 ---
 
 <script setup>
@@ -186,14 +189,14 @@ import NoticeList from './.vitepress/theme/components/NoticeList.vue'
     <h2>更多链接</h2>
     <div class="contact-grid">
 
-<a class="contact-link" href="https://drive.nuist.dev/" target="_blank" rel="noreferrer" aria-label="校园资料整理（仅限内网）：drive.nuist.dev">
+<a class="contact-link" href="https://drive.nuist.dev/" target="_blank" rel="noreferrer" aria-label="校园资料整理（仅限 i-nuist 访问）：drive.nuist.dev">
   <figure class="contact-card">
     <img class="link-icon" src="/assets/icons/file-explorer.png" width="96" height="96" alt="" loading="lazy" />
     <figcaption>
       <strong>校园资料整理</strong>
       <span>drive.nuist.dev</span>
-      <span>仅限内网访问</span>
-      <span>由修机师和 DH 互联网社团共建</span>
+      <span>由海上修机师和 DH 互联网工作室共建</span>
+      <span>仅限 i-nuist 访问</span>
       <span class="contact-join">点击访问</span>
     </figcaption>
   </figure>
