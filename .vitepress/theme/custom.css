@@ -379,6 +379,14 @@ html:has(.fp-root) {
   text-decoration: underline;
 }
 
+/* 「更多链接」卡片：复用联系卡片样式，用图标代替二维码 */
+.contact-card img.link-icon {
+  width: 96px;
+  height: 96px;
+  margin: 32px auto 44px;
+  border-radius: 0;
+}
+
 /* ===== 服务卡片（并入首页「我们是谁」） ===== */
 .svc-grid {
   display: flex;
