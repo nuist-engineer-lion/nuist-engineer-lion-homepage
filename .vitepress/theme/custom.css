@@ -387,6 +387,15 @@ html:has(.fp-root) {
   border-radius: 0;
 }
 
+/* 「更多链接」各卡片等高：说明文字行数不同时也对齐 */
+.fp-links .contact-link {
+  display: flex;
+}
+
+.fp-links .contact-card {
+  box-sizing: border-box;
+}
+
 /* ===== 服务卡片（并入首页「我们是谁」） ===== */
 .svc-grid {
   display: flex;

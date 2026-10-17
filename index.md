@@ -202,6 +202,28 @@ import NoticeList from './.vitepress/theme/components/NoticeList.vue'
   </figure>
 </a>
 
+<a class="contact-link" href="https://qm.qq.com/q/hEC5UXcAAE" target="_blank" rel="noreferrer" aria-label="加入 DH互联网公会：214013162">
+  <figure class="contact-card">
+    <img src="/assets/qr/group-214013162.svg" width="160" height="160" alt="DH互联网公会 QQ 群二维码" loading="lazy" />
+    <figcaption>
+      <strong>DH互联网公会</strong>
+      <span>群号：214013162</span>
+      <span class="contact-join">点击加入</span>
+    </figcaption>
+  </figure>
+</a>
+
+<a class="contact-link" href="https://qm.qq.com/q/Ts8WedkEuI" target="_blank" rel="noreferrer" aria-label="加入南信大科技联盟大厅：625806445">
+  <figure class="contact-card">
+    <img src="/assets/qr/group-625806445.svg" width="160" height="160" alt="南信大科技联盟大厅 QQ 群二维码" loading="lazy" />
+    <figcaption>
+      <strong>南信大科技联盟大厅</strong>
+      <span>群号：625806445</span>
+      <span class="contact-join">点击加入</span>
+    </figcaption>
+  </figure>
+</a>
+
 </div>
   </div>
 </section>
