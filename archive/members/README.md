@@ -11,7 +11,7 @@
 ## 自己提交：四步
 
 1. 打开 [仓库](https://github.com/nuist-engineer-lion/nuist-engineer-lion-homepage) 的 `archive/members/entries/` 目录，点右上角 **Add file → Create new file**（没有写权限时 GitHub 会自动帮你 Fork）。
-2. 文件名填 `你的id.md`，例如 `张三.md` 或 `a350_ti.md`。
+2. 文件名填 `你的id.md`，例如 `张三.md`。
 3. 把下面的模板粘贴进去，按自己的情况改。
 4. 点 **Commit changes**，再按提示创建 Pull Request，等管理员合并。
 
@@ -35,8 +35,8 @@ qq: 123456789
 
 | 字段 | 必填 | 填什么 | 示例 |
 | --- | --- | --- | --- |
-| `name` | 是 | 卡片上显示的名字，昵称、ID 都可以 | `name: A350_ti` |
-| `bio` | 是 | 一行自我介绍，显示在卡片上，建议 20 字以内 | `bio: 考古专家、屎山维护者` |
+| `name` | 是 | 卡片上显示的名字，昵称、ID 都可以 | `name: zzq` |
+| `bio` | 是 | 一行自我介绍，显示在卡片上，建议 20 字以内 | `bio: 猫娘` |
 | `qq` | 否 | 你的 QQ 号，用来显示 QQ 头像 | `qq: 123456789` |
 | `avatar` | 否 | 不想用 QQ 头像时，填一个 `https://` 开头的图片地址，优先于 `qq` | `avatar: https://example.com/me.png` |
 
