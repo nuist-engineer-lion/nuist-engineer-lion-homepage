@@ -54,6 +54,15 @@ export default defineConfig({
     ]
   ],
 
+  // 成员详情页只在 frontmatter 写 name / bio，这里补成页面标题与描述，供浏览器标签与分享卡片使用
+  transformPageData(pageData) {
+    if (pageData.relativePath.startsWith('archive/members/entries/')) {
+      const { name, bio } = pageData.frontmatter
+      if (name) pageData.title = String(name)
+      if (bio && !pageData.description) pageData.description = `海上修机师成员 ${name}：${bio}`
+    }
+  },
+
   // 每页补 canonical 与 og/twitter 的标题、描述、地址（构建期生效）
   transformHead({ pageData, title, description }) {
     const path = pageData.relativePath.replace(/index\.md$/, '').replace(/\.md$/, '.html')
@@ -83,7 +92,7 @@ export default defineConfig({
       { text: '通知中心', link: '/notices/' },
       { text: '档案馆', link: '/archive/' },
       { text: '历届部长团', link: '/archive/team/2023' },
-      { text: '成员资源仓库', link: '/archive/store/' },
+      { text: '成员列表', link: '/archive/members/' },
     ],
     sidebar:
     {

@@ -3,6 +3,7 @@ import { inBrowser } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import NoticeBubble from './components/NoticeBubble.vue'
 import NoticeMeta from './components/NoticeMeta.vue'
+import MemberMeta from './components/MemberMeta.vue'
 import { setupHomePaging } from './homePaging'
 import './custom.css'
 
@@ -12,8 +13,8 @@ export default {
     return h(DefaultTheme.Layout, null, {
       // 全站右下角浮动通知气泡
       'layout-bottom': () => h(NoticeBubble),
-      // 通知详情页正文上方的标题与日期
-      'doc-before': () => h(NoticeMeta)
+      // 通知详情页正文上方的标题与日期；成员详情页正文上方的头像、名字与介绍
+      'doc-before': () => [h(NoticeMeta), h(MemberMeta)]
     })
   },
   enhanceApp({ app, router }) {

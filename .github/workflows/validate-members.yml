@@ -1,0 +1,100 @@
+name: Validate Members
+
+on:
+  pull_request:
+    paths:
+      - "archive/members/entries/**"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate member entries
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate changed member files
+        run: |
+          BASE="${{ github.event.pull_request.base.sha }}"
+          # 与 Validate Notices 相同：NUL 分隔读入数组，避免文件名被拆分或展开
+          mapfile -d '' -t CHANGED < <(git diff --name-only --diff-filter=ACMR -z "$BASE" HEAD -- archive/members/entries/)
+          if [ "${#CHANGED[@]}" -eq 0 ]; then
+            echo "没有新增或修改的成员文件（仅删除或无改动），跳过校验。"
+            exit 0
+          fi
+          echo "待校验文件："
+          printf '%s\n' "${CHANGED[@]}"
+          python3 -c "import yaml" 2>/dev/null || python3 -m pip install --quiet pyyaml
+          python3 - "${CHANGED[@]}" <<'PYEOF'
+          import re
+          import sys
+          from pathlib import Path
+
+          import yaml
+
+          # id 允许中文（常用汉字区 一-鿿）、小写字母、数字、- 和 _
+          NAME_RE = re.compile(r"^[a-z0-9_一-鿿-]+\.md$")
+          FM_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*\n", re.S)
+          QQ_RE = re.compile(r"^[1-9]\d{4,11}$")
+
+
+          def nonempty_str(v) -> bool:
+              return isinstance(v, str) and bool(v.strip())
+
+
+          def frontmatter_problems(fm_text: str) -> list[str]:
+              try:
+                  fm = yaml.safe_load(fm_text)
+              except (yaml.YAMLError, ValueError) as e:
+                  return [f"frontmatter 解析失败: {e}"]
+              if not isinstance(fm, dict):
+                  return ["frontmatter 需为 YAML 映射"]
+
+              problems = []
+              # name 可能被写成纯数字昵称，按字符串处理
+              name = fm.get("name")
+              if not (nonempty_str(name) or isinstance(name, int)):
+                  problems.append("缺少必填的 name")
+              bio = fm.get("bio")
+              if not nonempty_str(bio):
+                  problems.append("缺少必填的 bio（一行自我介绍）")
+              elif "\n" in bio.strip():
+                  problems.append("bio 只能写一行")
+              qq = fm.get("qq")
+              if qq is not None and not QQ_RE.match(str(qq)):
+                  problems.append(f"qq 需为 5~12 位数字，实际为 {qq!r}")
+              avatar = fm.get("avatar")
+              if avatar is not None and not (nonempty_str(avatar) and avatar.startswith("https://")):
+                  problems.append("avatar 需为 https:// 开头的图片地址")
+              return problems
+
+
+          failures = []
+          for arg in sys.argv[1:]:
+              p = Path(arg)
+              if not p.exists():
+                  failures.append(f"{p}: 文件不存在")
+                  continue
+              problems = []
+              if not NAME_RE.match(p.name):
+                  problems.append("文件名需为 <id>.md，id 只用中文、小写字母、数字、- 和 _")
+              m = FM_RE.match(p.read_text(encoding="utf-8"))
+              if not m:
+                  problems.append("缺少 frontmatter（文件需以 --- 包裹的 YAML 开头）")
+              else:
+                  problems.extend(frontmatter_problems(m.group(1)))
+              if problems:
+                  failures.append(f"{p}:\n" + "\n".join(f"  - {x}" for x in problems))
+
+          if failures:
+              for f in failures:
+                  print(f)
+              print(f"::error::成员文件校验未通过：{len(failures)} 个文件有问题")
+              sys.exit(1)
+          print(f"成员文件校验通过：{len(sys.argv) - 1} 个文件")
+          PYEOF
