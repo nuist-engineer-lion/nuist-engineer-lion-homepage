@@ -518,6 +518,29 @@ html:has(.fp-root).fp-snap-off {
   color: var(--vp-c-text-3);
 }
 
+/* ===== 通知正文配图：居中等宽、圆角描边，图注小字 ===== */
+.vp-doc .notice-figure {
+  margin: 20px auto 24px;
+  max-width: 520px;
+}
+
+.vp-doc .notice-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+}
+
+.vp-doc .notice-figure figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--vp-c-text-3);
+}
+
 /* ===== 页脚：许可证与源码入口（AGPL 第 13 条） ===== */
 .VPFooter .message a {
   color: var(--vp-c-brand-1);
