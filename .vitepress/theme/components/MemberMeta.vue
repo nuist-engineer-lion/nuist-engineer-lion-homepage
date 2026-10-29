@@ -19,7 +19,7 @@ const avatar = computed(() => avatarOf(fm.value))
   <div v-if="isEntry" class="member-meta">
     <a class="member-back" :href="withBase('/archive/members/')">← 返回成员列表</a>
     <div class="member-meta-head">
-      <MemberAvatar :src="avatar" :name="String(fm.name ?? '')" :size="112" />
+      <MemberAvatar v-if="avatar" :src="avatar" :name="String(fm.name ?? '')" :size="112" />
       <div>
         <h1 class="member-meta-name">{{ fm.name }}</h1>
         <p v-if="fm.bio" class="member-meta-bio">{{ fm.bio }}</p>

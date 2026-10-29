@@ -552,15 +552,9 @@ html:has(.fp-root).fp-snap-off {
   text-decoration: underline;
 }
 
-/* —— 成员列表页：不显示右侧目录，内容区放宽到一行四张卡片 ——
-   默认无目录时正文最宽 784px，这里放宽到 1020px（含左右各 32px 内边距）。
-   多写一层 .Layout 是为了压过 VPDoc 自带的 scoped 样式。 */
-@media (min-width: 960px) {
-  .Layout.members-page .VPDoc:not(.has-sidebar) .container {
-    max-width: 1104px;
-  }
-
-  .Layout.members-page .VPDoc:not(.has-sidebar) .content {
-    max-width: 1020px;
-  }
+/* —— 成员列表页：整页翻屏，页面本身不滚动，滚动都在屏内（见 MembersPage.vue） —— */
+html.mp-fullpage,
+html.mp-fullpage body {
+  overflow: hidden;
+  overscroll-behavior: none;
 }

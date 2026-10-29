@@ -91,8 +91,7 @@ export default defineConfig({
       { text: '修机文档', link: '/docs/' },
       { text: '通知中心', link: '/notices/' },
       { text: '档案馆', link: '/archive/' },
-      { text: '历届部长团', link: '/archive/team/2023' },
-      { text: '成员列表', link: '/archive/members/' },
+      { text: '成员列表', link: '/archive/members/', activeMatch: '^/archive/members/' },
     ],
     sidebar:
     {
@@ -105,6 +104,11 @@ export default defineConfig({
         items: getSidebar({ contentRoot: '.', contentDirs:["archive/team"],collapsible: false, collapsed: false })
       }]
     },
+
+    // 文末翻页、目录与「回到顶部」的文字改为中文（默认是英文）
+    docFooter: { prev: '上一页', next: '下一页' },
+    outlineTitle: '本页目录',
+    returnToTopLabel: '回到顶部',
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/nuist-engineer-lion/nuist-engineer-lion-homepage' }

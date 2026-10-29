@@ -9,7 +9,7 @@ export function avatarOf(fm: Record<string, any>): string {
   return ''
 }
 
-// 解析 <MemberList ids="a, b c" /> 里的 id 列表，中英文逗号与空白都可作分隔
+// 解析成员列表页分组里「a, b c」形式的 id 列表，中英文逗号与空白都可作分隔
 export function parseIds(value: string): string[] {
   return value.split(/[\s,，]+/).filter(Boolean)
 }
