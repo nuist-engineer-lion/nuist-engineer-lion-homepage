@@ -16,12 +16,47 @@
 }
 
 /* 文档目录独立于站名滚动，避免原生粗滚动条贯穿整个顶栏。 */
+html {
+  scrollbar-gutter: stable;
+}
+
 .VPSidebar {
   scrollbar-width: thin;
   scrollbar-color: var(--vp-c-divider) transparent;
 }
 
+@media (max-width: 959px) {
+  html .Layout .VPDoc:not(.has-sidebar) {
+    padding: 32px 24px 96px;
+  }
+}
+
+@media (max-width: 560px) {
+  html .Layout .VPDoc:not(.has-sidebar) {
+    padding: 24px 16px 96px;
+  }
+}
+
 @media (min-width: 960px) {
+  /* 有无侧栏均使用同一顶栏容器，避免两套定位公式产生偏移。 */
+  html .Layout .VPNavBar.has-sidebar {
+    padding: 0 32px;
+  }
+
+  html .Layout .VPNavBar.has-sidebar > .container {
+    max-width: calc(var(--vp-layout-max-width) - 64px);
+  }
+
+  html .Layout .VPNavBar.has-sidebar > .container > .title {
+    position: static;
+    padding: 0;
+    width: auto;
+  }
+
+  html .Layout .VPNavBar.has-sidebar > .container > .content {
+    padding: 0;
+  }
+
   html .Layout .VPSidebar {
     top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px));
     padding-top: 0;
@@ -29,6 +64,22 @@
 
   html .Layout .VPSidebar > .curtain {
     display: none;
+  }
+
+  /* 普通子页与成员页共用 1152px 的外框和 32px 内边距。 */
+  html .Layout .VPDoc:not(.has-sidebar) > .container {
+    max-width: 1152px;
+  }
+
+  html .Layout .VPDoc:not(.has-sidebar) > .container > .content {
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+  }
+
+  html .Layout .VPDoc:not(.has-sidebar) .content-container {
+    margin-left: 0;
+    max-width: 688px;
   }
 }
 

@@ -543,6 +543,7 @@ onBeforeUnmount(() => {
   overscroll-behavior: contain;
   outline: none;
   scrollbar-width: thin;
+  scrollbar-gutter: stable both-edges;
 }
 
 .fp-inner {
@@ -728,7 +729,7 @@ onBeforeUnmount(() => {
   }
 
   .fp-inner {
-    padding: 36px 32px 40px;
+    padding: 32px 32px 40px;
   }
 
   .fp-body {
