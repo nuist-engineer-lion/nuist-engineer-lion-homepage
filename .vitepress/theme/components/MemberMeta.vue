@@ -17,7 +17,7 @@ const avatar = computed(() => avatarOf(fm.value))
 
 <template>
   <div v-if="isEntry" class="member-meta">
-    <a class="member-back" :href="withBase('/archive/members/')">← 返回成员列表</a>
+    <a class="member-back page-back" :href="withBase('/archive/members/')">← 返回成员列表</a>
     <div class="member-meta-head">
       <MemberAvatar v-if="avatar" :src="avatar" :name="String(fm.name ?? '')" :size="112" />
       <div>
@@ -36,15 +36,7 @@ const avatar = computed(() => avatarOf(fm.value))
 }
 
 .member-back {
-  display: inline-block;
   margin-bottom: 20px;
-  font-size: 14px;
-  color: var(--vp-c-text-2);
-  text-decoration: none;
-}
-
-.member-back:hover {
-  color: var(--vp-c-brand-1);
 }
 
 .member-meta-head {

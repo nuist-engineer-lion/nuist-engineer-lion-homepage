@@ -490,17 +490,37 @@ html:has(.fp-root).fp-snap-off {
   margin: 0 0 20px;
 }
 
-.notice-back {
-  display: inline-block;
-  margin-bottom: 10px;
-  font-size: 14px;
+/* 左上角返回入口共用样式 */
+.page-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+  background: var(--vp-c-bg-soft);
+  font-size: 15px;
   font-weight: 500;
-  color: var(--vp-c-brand-1);
+  line-height: 24px;
+  color: var(--vp-c-text-2);
   text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
 }
 
-.notice-back:hover {
-  text-decoration: underline;
+.page-back:hover {
+  border-color: var(--vp-c-brand-1);
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+}
+
+.page-back:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 3px;
+}
+
+.notice-back {
+  margin-bottom: 10px;
 }
 
 .notice-meta-title {

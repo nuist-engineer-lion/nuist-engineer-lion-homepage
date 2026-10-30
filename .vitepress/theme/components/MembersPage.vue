@@ -305,7 +305,7 @@ onBeforeUnmount(() => {
                 </p>
               </header>
               <header v-else class="fp-head">
-                <button type="button" class="fp-back" @click="go(0)">
+                <button type="button" class="fp-back page-back" @click="go(0)">
                   <span aria-hidden="true">↑</span> 现有成员
                 </button>
                 <h2 class="fp-title">往届成员</h2>
@@ -554,19 +554,7 @@ onBeforeUnmount(() => {
 
 .fp-back {
   margin-bottom: 14px;
-  padding: 4px 12px;
-  border-radius: 999px;
-  background: var(--vp-c-bg-soft);
-  font-size: 13px;
   font-weight: 600;
-  color: var(--vp-c-text-2);
-  cursor: pointer;
-  transition: color 0.2s, background-color 0.2s;
-}
-
-.fp-back:hover {
-  background: var(--vp-c-brand-soft);
-  color: var(--vp-c-brand-1);
 }
 
 /* —— 分组与卡片 —— */
