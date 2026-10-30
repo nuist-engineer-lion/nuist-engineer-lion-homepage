@@ -18,7 +18,9 @@ export interface MemberGroup {
   // 页面内锚点，例如 y2025；没有年份的分组用 g + 序号
   key: string
   title: string
+  tagline: string
   note: string
+  noteLayout?: 'poem'
   members: Member[]
 }
 
@@ -77,7 +79,9 @@ export default createContentLoader(['/archive/members/entries/*.md', LIST_PAGE],
         return {
           key: year ? `y${year}` : `g${++seq}`,
           title: String(g.title),
+          tagline: g.tagline ? String(g.tagline) : '',
           note: g.note ? String(g.note) : '',
+          noteLayout: g.noteLayout === 'poem' ? 'poem' : undefined,
           members: list
         }
       })
@@ -86,7 +90,7 @@ export default createContentLoader(['/archive/members/entries/*.md', LIST_PAGE],
     const current = groups('current')
     const alumni = groups('alumni')
     const rest = members.filter((m) => !listed.has(m.id))
-    if (rest.length) current.push({ key: 'rest', title: '其他成员', note: '', members: rest })
+    if (rest.length) current.push({ key: 'rest', title: '其他成员', tagline: '', note: '', members: rest })
 
     return { current, alumni }
   }

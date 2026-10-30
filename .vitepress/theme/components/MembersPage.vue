@@ -334,7 +334,11 @@ onBeforeUnmount(() => {
                     <h3 class="fp-group-title">
                       {{ g.title }}<span class="fp-group-count">{{ g.members.length }} 人</span>
                     </h3>
-                    <p v-if="g.note" class="fp-group-note">{{ g.note }}</p>
+                    <p v-if="g.tagline" class="fp-group-tagline">{{ g.tagline }}</p>
+                    <div v-if="g.note && g.noteLayout === 'poem'" class="fp-group-note fp-poem">
+                      <p v-for="(stanza, stanzaIndex) in g.note.trim().split(/\n\s*\n/)" :key="stanzaIndex">{{ stanza }}</p>
+                    </div>
+                    <p v-else-if="g.note" class="fp-group-note">{{ g.note }}</p>
                     <div class="fp-grid">
                       <MemberCard v-for="m in g.members" :key="m.id" :member="m" />
                     </div>
@@ -596,11 +600,35 @@ onBeforeUnmount(() => {
   color: var(--vp-c-text-3);
 }
 
+.fp-group-tagline,
 .fp-group-note {
   margin: 8px 0 0;
   font-size: 14px;
   line-height: 1.7;
   color: var(--vp-c-text-2);
+}
+
+.fp-group-note {
+  margin-top: 16px;
+  white-space: pre-line;
+}
+
+.fp-poem {
+  display: grid;
+  gap: 16px 24px;
+}
+
+.fp-poem p {
+  margin: 0;
+  min-width: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+@media (min-width: 768px) {
+  .fp-poem {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .fp-grid {
