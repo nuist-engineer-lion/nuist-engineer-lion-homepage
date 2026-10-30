@@ -97,7 +97,10 @@ export default defineConfig({
     {
       "/docs/":[{
         text: "修机日志",
-        items: getSidebar({ contentRoot: '.', contentDirs:["docs"],collapsible: false, collapsed: false })
+        link: '/docs/',
+        items: (getSidebar({ contentRoot: '.', contentDirs: ['docs'] })[0]?.items ?? [])
+          .filter((item) => !/[\\/]index\.md$/.test(item.link ?? ''))
+          .map((item) => ({ ...item, link: item.link?.replace(/\\/g, '/') }))
       }],
       "/archive/team/":[{
         text: "历届部长团",

@@ -15,6 +15,23 @@
   --vp-c-brand-soft: rgba(27, 210, 224, 0.16);
 }
 
+/* 文档目录独立于站名滚动，避免原生粗滚动条贯穿整个顶栏。 */
+.VPSidebar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--vp-c-divider) transparent;
+}
+
+@media (min-width: 960px) {
+  html .Layout .VPSidebar {
+    top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px));
+    padding-top: 0;
+  }
+
+  html .Layout .VPSidebar > .curtain {
+    display: none;
+  }
+}
+
 /* ===== 首页：整页滑动（每屏一页，scroll-snap 吸附） ===== */
 html:has(.fp-root) {
   /* proximity 而非 mandatory：无级滚轮/惯性滚动不会被强制吸附反复拽回
