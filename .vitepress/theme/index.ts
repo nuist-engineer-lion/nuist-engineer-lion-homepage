@@ -6,6 +6,7 @@ import NoticeMeta from './components/NoticeMeta.vue'
 import MemberMeta from './components/MemberMeta.vue'
 import MemberComments from './components/MemberComments.vue'
 import { setupHomePaging } from './homePaging'
+import { animatePageChange } from './pageTransition'
 import './custom.css'
 
 export default {
@@ -26,7 +27,11 @@ export default {
     if (inBrowser) {
       // 首次进入 + 每次路由切换后重新判定分屏吸附（含窄屏装不下时退出吸附）
       setupHomePaging()
-      router.onAfterRouteChanged = () => setupHomePaging()
+      void animatePageChange()
+      router.onAfterRouteChanged = async () => {
+        setupHomePaging()
+        await animatePageChange()
+      }
     }
   }
 }
