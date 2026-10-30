@@ -34,6 +34,13 @@ const instant = ref(false) // 打开带锚点的地址时直接定位，不播�
 const pull = ref(0) // 在屏尽头继续滚动的进度（0~1），驱动提示箭头
 const activeGroup = ref('')
 const chips = ref<HTMLElement | null>(null)
+const tabsInNav = ref(false)
+// 等主导航完成挂载后再创建 Teleport，避免 SSR 水合时目标尚未就绪。
+const tabsReady = ref(false)
+let navMedia: MediaQueryList | undefined
+function updateTabsLocation() {
+  tabsInNav.value = navMedia?.matches ?? false
+}
 const scrollers: HTMLElement[] = []
 
 // 分组元素的 id 故意和地址里的锚点（#y2019）不同：否则浏览器原生的锚点跳转和 VitePress 路由
@@ -227,6 +234,10 @@ function applyHash() {
 }
 
 onMounted(() => {
+  tabsReady.value = true
+  navMedia = window.matchMedia('(min-width: 1100px)')
+  updateTabsLocation()
+  navMedia.addEventListener('change', updateTabsLocation)
   // 页面本身不滚动，所有滚动都发生在屏内
   document.documentElement.classList.add('mp-fullpage')
   // VitePress 路由挂载后还会按自己的偏移滚到地址里的锚点，晚一拍再处理才不会被它盖掉
@@ -237,6 +248,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  navMedia?.removeEventListener('change', updateTabsLocation)
   document.documentElement.classList.remove('mp-fullpage')
   window.removeEventListener('keydown', onKey)
   window.removeEventListener('hashchange', applyHash)
@@ -248,19 +260,21 @@ onBeforeUnmount(() => {
   <div class="fp" @wheel="onWheel" @touchstart.passive="onTouchStart" @touchmove.passive="onTouchMove">
     <div class="fp-bar">
       <div class="fp-bar-inner">
-        <nav class="fp-tabs" aria-label="成员分类">
-          <button
-            v-for="(s, i) in screens"
-            :key="s.key"
-            type="button"
-            class="fp-tab"
-            :class="{ active: index === i }"
-            :aria-current="index === i ? 'true' : undefined"
-            @click="go(i, { toTop: true })"
-          >
-            {{ s.label }}<span class="fp-count">{{ countOf(s.groups) }}</span>
-          </button>
-        </nav>
+        <Teleport v-if="tabsReady" to="#members-nav-tabs" :disabled="!tabsInNav">
+          <nav class="fp-tabs" aria-label="成员分类">
+            <button
+              v-for="(s, i) in screens"
+              :key="s.key"
+              type="button"
+              class="fp-tab"
+              :class="{ active: index === i }"
+              :aria-current="index === i ? 'true' : undefined"
+              @click="go(i, { toTop: true })"
+            >
+              {{ s.label }}<span class="fp-count">{{ countOf(s.groups) }}</span>
+            </button>
+          </nav>
+        </Teleport>
 
         <nav ref="chips" class="fp-chips" aria-label="年份">
           <!-- 用按钮而不是 #锚点链接：VitePress 路由会接管锚点点击并按自己的方式滚动 -->
@@ -771,6 +785,13 @@ onBeforeUnmount(() => {
     background: var(--vp-c-brand-1);
     opacity: 1;
     transform: scale(1.4);
+  }
+}
+
+/* 宽屏：分类移入主导航后，省去页面内的切换栏。 */
+@media (min-width: 1100px) {
+  .fp-bar {
+    display: none;
   }
 }
 

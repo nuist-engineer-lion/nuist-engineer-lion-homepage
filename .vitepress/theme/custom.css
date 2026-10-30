@@ -578,3 +578,17 @@ html.mp-fullpage body {
   overflow: hidden;
   overscroll-behavior: none;
 }
+
+/* 成员分类在宽屏上融入主导航，窄屏仍留在页面内。 */
+#members-nav-tabs {
+  display: none;
+}
+
+@media (min-width: 1100px) {
+  #members-nav-tabs:not(:empty) {
+    display: flex;
+    align-items: center;
+    margin-left: 24px;
+    margin-right: auto;
+  }
+}

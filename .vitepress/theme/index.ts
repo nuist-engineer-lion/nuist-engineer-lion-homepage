@@ -12,6 +12,7 @@ export default {
   extends: DefaultTheme,
   Layout() {
     return h(DefaultTheme.Layout, null, {
+      'nav-bar-content-before': () => h('div', { id: 'members-nav-tabs' }),
       // 全站右下角浮动通知气泡
       'layout-bottom': () => h(NoticeBubble),
       // 通知详情页正文上方的标题与日期；成员详情页正文上方的头像、名字与介绍
