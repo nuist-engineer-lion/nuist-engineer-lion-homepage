@@ -12,14 +12,18 @@ import MemberCard from './MemberCard.vue'
 //   - 一屏内容比视窗高时在屏内滚动；滚到这一屏的尽头先停住，**下一次**滚动（新的一次手势）才翻屏，
 //     同一次手势的惯性不会直接翻过去——即「先保留整一屏再翻页」
 //   - 触屏：停在屏的顶 / 底端时再往同方向滑才翻屏；键盘：↑↓ / PageUp / PageDown / 空格同理
-//   - 顶部切换条显示当前所在的屏，点了直接翻过去；年份导航（桌面右侧 / 窄屏切换条下方）只列当前屏的各届
+//   - 顶部切换条显示当前所在的屏，点了直接翻过去；年份导航只在往届成员屏显示
 //   - 地址 #alumni 直接打开往届成员，#y2019 这类直接跳到对应年份
 // 分组数据来自 index.md 的 frontmatter，见 members.data.mts。
 
 type ScreenKey = 'current' | 'alumni'
 
 const screens: { key: ScreenKey; label: string; groups: MemberGroup[] }[] = [
-  { key: 'current', label: '现有成员', groups: data.current },
+  {
+    key: 'current',
+    label: '现有成员',
+    groups: [{ key: 'current', title: '现有成员', tagline: '', note: '', members: data.current }]
+  },
   { key: 'alumni', label: '往届成员', groups: data.alumni }
 ]
 
@@ -276,7 +280,7 @@ onBeforeUnmount(() => {
           </nav>
         </Teleport>
 
-        <nav ref="chips" class="fp-chips" aria-label="年份">
+        <nav v-if="index === 1" ref="chips" class="fp-chips" aria-label="年份">
           <!-- 用按钮而不是 #锚点链接：VitePress 路由会接管锚点点击并按自己的方式滚动 -->
           <button
             v-for="g in activeScreen.groups"
@@ -328,10 +332,10 @@ onBeforeUnmount(() => {
                 </p>
               </header>
 
-              <div class="fp-body">
+              <div class="fp-body" :class="{ 'has-groups': s.key === 'alumni' }">
                 <main class="fp-main">
                   <section v-for="g in s.groups" :id="groupId(g.key)" :key="g.key" class="fp-group">
-                    <h3 class="fp-group-title">
+                    <h3 v-if="s.key === 'alumni'" class="fp-group-title">
                       {{ g.title }}<span class="fp-group-count">{{ g.members.length }} 人</span>
                     </h3>
                     <p v-if="g.tagline" class="fp-group-tagline">{{ g.tagline }}</p>
@@ -345,7 +349,7 @@ onBeforeUnmount(() => {
                   </section>
                 </main>
 
-                <aside class="fp-aside" :aria-label="`${s.label}目录`">
+                <aside v-if="s.key === 'alumni'" class="fp-aside" :aria-label="`${s.label}目录`">
                   <p class="fp-aside-title">{{ s.label }}</p>
                   <button
                     v-for="g in s.groups"
@@ -732,7 +736,7 @@ onBeforeUnmount(() => {
     padding: 32px 32px 40px;
   }
 
-  .fp-body {
+  .fp-body.has-groups {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 160px;
     gap: 48px;
