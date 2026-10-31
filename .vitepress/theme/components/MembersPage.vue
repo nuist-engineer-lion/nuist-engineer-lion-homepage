@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { data } from '../members.data.mts'
 import type { MemberGroup } from '../members.data.mts'
+import { savedMembersView, saveMembersView } from '../membersViewState'
 import MemberCard from './MemberCard.vue'
 
 // 成员列表独立页面（archive/members/index.md 用 layout: page 挂载本组件）。
@@ -46,6 +47,8 @@ function updateTabsLocation() {
   tabsInNav.value = navMedia?.matches ?? false
 }
 const scrollers: HTMLElement[] = []
+let viewHash = ''
+let initialPositionTimer: number | undefined
 
 // 分组元素的 id 故意和地址里的锚点（#y2019）不同：否则浏览器原生的锚点跳转和 VitePress 路由
 // 会在页面加载时抢先去滚动屏内容器，和这里的定位叠加后跳过头
@@ -67,6 +70,7 @@ function reducedMotion(): boolean {
 }
 
 function setHash(hash: string) {
+  viewHash = hash
   history.replaceState(history.state, '', hash || location.pathname + location.search)
 }
 
@@ -231,13 +235,30 @@ function onKey(e: KeyboardEvent) {
 }
 
 function applyHash() {
+  viewHash = location.hash
   const hash = decodeURIComponent(location.hash.slice(1))
   if (hash === 'alumni') go(1, { instant: true, toTop: true })
   else if (hash) jumpTo(hash, { instant: true })
   else updateActiveGroup()
 }
 
+async function restoreView() {
+  const saved = savedMembersView
+  // 新打开的年份链接仍按锚点定位；返回原地址时才恢复精确的屏内位置。
+  if (!saved || saved.hash !== location.hash) {
+    applyHash()
+    return
+  }
+  await go(saved.screenIndex, { instant: true })
+  setHash(saved.hash)
+  scrollers.forEach((el, i) => {
+    el.scrollTop = saved.scrollTops[i] ?? 0
+  })
+  updateActiveGroup()
+}
+
 onMounted(() => {
+  viewHash = location.hash
   tabsReady.value = true
   navMedia = window.matchMedia('(min-width: 1100px)')
   updateTabsLocation()
@@ -245,13 +266,19 @@ onMounted(() => {
   // 页面本身不滚动，所有滚动都发生在屏内
   document.documentElement.classList.add('mp-fullpage')
   // VitePress 路由挂载后还会按自己的偏移滚到地址里的锚点，晚一拍再处理才不会被它盖掉
-  window.setTimeout(applyHash, 0)
+  initialPositionTimer = window.setTimeout(restoreView, 0)
   window.addEventListener('keydown', onKey)
   window.addEventListener('hashchange', applyHash)
   window.addEventListener('resize', updateActiveGroup)
 })
 
 onBeforeUnmount(() => {
+  window.clearTimeout(initialPositionTimer)
+  saveMembersView({
+    hash: viewHash,
+    screenIndex: index.value,
+    scrollTops: scrollers.map((el) => el.scrollTop)
+  })
   navMedia?.removeEventListener('change', updateTabsLocation)
   document.documentElement.classList.remove('mp-fullpage')
   window.removeEventListener('keydown', onKey)

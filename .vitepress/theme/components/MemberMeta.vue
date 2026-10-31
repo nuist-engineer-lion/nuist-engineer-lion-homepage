@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useData, withBase } from 'vitepress'
 import { avatarOf } from '../memberUtils'
+import { savedMembersView } from '../membersViewState'
 import MemberAvatar from './MemberAvatar.vue'
 
 // 成员详情页（archive/members/entries/*.md）在正文上方补出头像、名字与一句话介绍：
@@ -17,7 +18,7 @@ const avatar = computed(() => avatarOf(fm.value))
 
 <template>
   <div v-if="isEntry" class="member-meta">
-    <a class="member-back page-back" :href="withBase('/archive/members/')">← 返回成员列表</a>
+    <a class="member-back page-back" :href="withBase('/archive/members/') + (savedMembersView?.hash ?? '')">← 返回成员列表</a>
     <div class="member-meta-head">
       <MemberAvatar v-if="avatar" :src="avatar" :name="String(fm.name ?? '')" :size="112" />
       <div>
