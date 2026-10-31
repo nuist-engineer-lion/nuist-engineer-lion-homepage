@@ -1,6 +1,8 @@
 # 成员条目填写指南
 
-[成员列表](/archive/members/) 里的每张卡片，都对应 `archive/members/entries/` 目录下的一个 Markdown 文件。每人的当前介绍使用一个文件，这个文件同时也是你的详情页；需要保留往届介绍时，另存为 `姓名-年份.md`，独立归档。
+[成员列表](/archive/members/) 里的每张卡片，都对应一个 Markdown 文件，这个文件同时也是你的详情页。现有成员的介绍放在 `archive/members/current/`，往届介绍放在 `archive/members/alumni/`；同一人的新旧介绍可以在两个目录里使用相同文件名，独立保存。例如 `current/江楠.md` 和 `alumni/江楠.md` 分别保存现有介绍与 2023 届介绍。
+
+成员 id 是各自目录内的文件名，不带 `.md`。网页详情地址由 `.vitepress/theme/memberRoutes.ts` 维护，沿用已发布的 `/archive/members/entries/` 地址；两份江楠介绍也各自保留原来的独立链接和留言。
 
 ## 最快的方式：找 bot
 
@@ -10,7 +12,7 @@
 
 ## 自己提交：四步
 
-1. 打开 [仓库](https://github.com/nuist-engineer-lion/nuist-engineer-lion-homepage) 的 `archive/members/entries/` 目录，点右上角 **Add file → Create new file**（没有写权限时 GitHub 会自动帮你 Fork）。
+1. 打开 [仓库](https://github.com/nuist-engineer-lion/nuist-engineer-lion-homepage) 的 `archive/members/current/` 目录（补充往届介绍则用 `archive/members/alumni/`），点右上角 **Add file → Create new file**（没有写权限时 GitHub 会自动帮你 Fork）。
 2. 文件名填 `你的id.md`，例如 `张三.md`。
 3. 把下面的模板粘贴进去，按自己的情况改。
 4. 点 **Commit changes**，再按提示创建 Pull Request，等管理员合并。
@@ -47,7 +49,7 @@ qq: 123456789
 ## 文件名（id）规则
 
 - 只能用中文、**小写**字母、数字、`-` 和 `_`，不能有大写、空格和其他符号。一般直接用名字，例如 `张三.md`。
-- 它决定详情页地址（`张三.md` 对应 `/archive/members/entries/张三`），也是排序分组时用的名字。
+- 它是排序分组时用的名字，默认也决定详情页地址（`张三.md` 对应 `/archive/members/entries/张三`）；同名介绍可单独配置公开地址，见下面的「排序与分组」。
 - 定下来以后尽量不要改：改了以前分享出去的链接会失效，详情页下面的留言也会对不上（留言按 id 归档）。
 
 ## 详细介绍怎么写
@@ -85,7 +87,7 @@ qq: 123456789
 
 ## 常见问题
 
-**新加的人排在哪？** 刚加进来、还没被排进列表的成员，会追加到「现有成员」末尾，与其他现有成员一起展示，不分年级。管理员可以调整顺序，见下面的「排序与分组」。
+**新加的人排在哪？** 放在 `current/`、还没被排进列表的成员，会追加到「现有成员」末尾，不分年级。放在 `alumni/` 的介绍必须由管理员加入对应年份分组，见下面的「排序与分组」。
 
 **提交后多久能看到？** PR 合并后网站会自动重新部署，通常几分钟内生效。
 
@@ -114,19 +116,20 @@ alumni:               # 往届成员
     members: 孙八, 周九
 ```
 
-- `current` 直接列出成员 id（文件名去掉 `.md`）；往届分组的 `members` 按想要的顺序写 id，中英文逗号都行。
+- `current` 直接列出 `current/` 中的成员 id（文件名去掉 `.md`）；往届分组的 `members` 填 `alumni/` 中的 id，按想要的顺序排列，中英文逗号都行。
 - 往届分组的 `title` 里带四位年份时会成为页面锚点，例如 `/archive/members/#y2023` 直接跳到 2023 届，`#alumni` 直接翻到往届成员。
 - `tagline` 保存各届的标语；`note` 保存成员名单前的组织整体介绍，多段文字或诗歌可以用 YAML 的 `|` 保留换行与空行。
 - 诗歌可以加上 `noteLayout: poem`，按空行划分诗节，宽屏三栏显示，窄屏纵向排列。
-- 成员转入往届时，从 `current` 移除对应 id，再加入 `alumni` 的相应年份分组。
-- 同一人同时保留新旧介绍时，当前介绍继续用原文件，旧介绍另存为 `姓名-年份.md` 并加入往届分组。旧条目使用当年的 `bio` 与正文；没有历史头像时不填 `qq` 或 `avatar`，与其他往届成员使用相同文字卡片排版。
-- 没写进任何列表的成员（例如 bot 刚加的人）会按名字排序追加到现有成员末尾，加入列表后按配置的顺序显示。
-- `members` 里写了不存在的 id 时，网站构建会直接报错并指出是哪一届、哪个 id，改成正确的文件名即可。
+- 成员转入往届时，将文件从 `current/` 移到 `alumni/`，从 `current` 列表移除对应 id，再加入 `alumni` 的相应年份分组。保持文件名不变即可沿用原有详情链接和留言。
+- 同一人同时保留新旧介绍时，当前介绍继续放在 `current/`，旧介绍放在 `alumni/` 并加入往届分组，两个目录可使用相同文件名。旧条目使用当年的 `bio` 与正文；没有历史头像时不填 `qq` 或 `avatar`，与其他往届成员使用相同文字卡片排版。
+- 同名介绍需要在 `.vitepress/theme/memberRoutes.ts` 的通用规则之前配置独立公开地址，列表卡片和 VitePress 页面路由会共用该配置。已有的 `alumni/江楠.md` 沿用 `/archive/members/entries/江楠-2023.html`，因此原链接与历史留言继续有效。
+- `current/` 中没写进列表的成员（例如 bot 刚加的人）会按名字排序追加到现有成员末尾，加入列表后按配置的顺序显示。`alumni/` 中的介绍必须加入年份分组，否则构建会报错。
+- id 不存在、文件放错目录或详情页地址冲突时，网站构建会直接报错。按错误提示检查分组、文件位置和路由配置即可。
 - 页面本身由 `.vitepress/theme/components/MembersPage.vue` 渲染，`index.md` 的正文只负责挂载它，不用改。
 
 ## 给维护者和 bot
 
-- bot 生成的文件格式与上面的模板相同，文件名用成员的 `id`。同一成员再次更新时修改当前介绍文件，保留独立的往届归档文件。
+- bot 生成的文件格式与上面的模板相同，文件名用成员的 `id`，新成员放入 `archive/members/current/`。同一成员再次更新时修改当前介绍文件，保留 `archive/members/alumni/` 中独立的往届归档文件。
 - `qq` 填发送者本人的 QQ 号。只改 frontmatter 时保留原有正文；更新详细介绍时整体替换正文。
 - PR 会自动跑「Validate Members」检查（文件名与 frontmatter 格式校验），构建检查由现有 Pages 工作流完成。
 - 审核时确认 `qq` 是本人的号码、本人同意公开，且介绍内容没有不当信息。**合并即发布**，删除文件即下线。

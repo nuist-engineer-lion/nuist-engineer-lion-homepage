@@ -3,7 +3,9 @@ name: Validate Members
 on:
   pull_request:
     paths:
-      - "archive/members/entries/**"
+      - "archive/members/current/**"
+      - "archive/members/alumni/**"
+      - ".github/workflows/validate-members.yml"
 
 permissions:
   contents: read
@@ -22,7 +24,7 @@ jobs:
         run: |
           BASE="${{ github.event.pull_request.base.sha }}"
           # 与 Validate Notices 相同：NUL 分隔读入数组，避免文件名被拆分或展开
-          mapfile -d '' -t CHANGED < <(git diff --name-only --diff-filter=ACMR -z "$BASE" HEAD -- archive/members/entries/)
+          mapfile -d '' -t CHANGED < <(git diff --name-only --diff-filter=ACMR -z "$BASE" HEAD -- archive/members/current/ archive/members/alumni/)
           if [ "${#CHANGED[@]}" -eq 0 ]; then
             echo "没有新增或修改的成员文件（仅删除或无改动），跳过校验。"
             exit 0

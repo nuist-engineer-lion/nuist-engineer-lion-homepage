@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 import type { HeadConfig } from 'vitepress'
 import { getSidebar } from 'vitepress-plugin-auto-sidebar'
+import { memberRewrites } from './theme/memberRoutes'
 
 // 页脚版权年份跟随构建时间，避免 "present" 这种模糊写法
 const buildYear = new Date().getFullYear()
@@ -15,6 +16,9 @@ export default defineConfig({
   title: '海上修机师',
   description:
     '海上修机师 · NUIST 校园电脑义修：故障维修、系统安装、清灰保养与硬件升级，另有修机文档、通知动态与档案馆。',
+
+  // 源文件按成员状态分目录，公开地址保持稳定，转入往届后旧链接仍然可用。
+  rewrites: memberRewrites,
 
   // 生成 sitemap.xml（仓库/目录说明页只面向贡献者，不进 sitemap）
   sitemap: {
