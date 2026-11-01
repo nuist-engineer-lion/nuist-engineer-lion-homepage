@@ -351,7 +351,8 @@ onBeforeUnmount(() => {
               </header>
               <header v-else class="fp-head">
                 <button type="button" class="fp-back page-back" @click="go(0)">
-                  <span aria-hidden="true">↑</span> 现有成员
+                  <span class="page-back-arrow is-up" aria-hidden="true"></span>
+                  <span>回到现有成员</span>
                 </button>
                 <h2 class="fp-title">往届成员</h2>
                 <p class="fp-intro">
@@ -604,7 +605,6 @@ onBeforeUnmount(() => {
 
 .fp-back {
   margin-bottom: 14px;
-  font-weight: 600;
 }
 
 /* —— 分组与卡片 —— */

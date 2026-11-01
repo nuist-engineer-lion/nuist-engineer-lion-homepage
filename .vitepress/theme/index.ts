@@ -5,6 +5,7 @@ import NoticeBubble from './components/NoticeBubble.vue'
 import NoticeMeta from './components/NoticeMeta.vue'
 import MemberMeta from './components/MemberMeta.vue'
 import MemberComments from './components/MemberComments.vue'
+import MemberPager from './components/MemberPager.vue'
 import { setupHomePaging } from './homePaging'
 import { animatePageChange } from './pageTransition'
 import './custom.css'
@@ -18,8 +19,8 @@ export default {
       'layout-bottom': () => h(NoticeBubble),
       // 通知详情页正文上方的标题与日期；成员详情页正文上方的头像、名字与介绍
       'doc-before': () => [h(NoticeMeta), h(MemberMeta)],
-      // 成员详情页正文下方的评论区（未配置 Twikoo 地址时不显示）
-      'doc-after': () => h(MemberComments)
+      // 成员详情页正文下方：上一位 / 下一位翻页，以及评论区（未配置 Twikoo 地址时不显示）
+      'doc-after': () => [h(MemberPager), h(MemberComments)]
     })
   },
   enhanceApp({ app, router }) {

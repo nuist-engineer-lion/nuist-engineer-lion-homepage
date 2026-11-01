@@ -18,7 +18,10 @@ const avatar = computed(() => avatarOf(fm.value))
 
 <template>
   <div v-if="isEntry" class="member-meta">
-    <a class="member-back page-back" :href="withBase('/archive/members/') + (savedMembersView?.hash ?? '')">← 返回成员列表</a>
+    <a class="member-back page-back" :href="withBase('/archive/members/') + (savedMembersView?.hash ?? '')">
+      <span class="page-back-arrow" aria-hidden="true"></span>
+      <span>返回成员列表</span>
+    </a>
     <div class="member-meta-head">
       <MemberAvatar v-if="avatar" :src="avatar" :name="String(fm.name ?? '')" :size="112" />
       <div>

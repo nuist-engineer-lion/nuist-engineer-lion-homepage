@@ -634,33 +634,75 @@ html:has(.fp-root).fp-snap-off {
   margin: 0 0 20px;
 }
 
-/* 左上角返回入口共用样式 */
+/* 左上角返回入口共用样式：与成员列表「继续下滑」提示同一套——粗体灰字 + 品牌色箭头，无边框
+   用法：<a class="page-back"><span class="page-back-arrow" aria-hidden="true"></span>文字</a>
+   箭头朝上时给箭头再加 .is-up，晃动方向随之改为上下 */
 .page-back {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 8px 16px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 10px;
-  background: var(--vp-c-bg-soft);
-  font-size: 15px;
-  font-weight: 500;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 14px;
+  font-weight: 600;
   line-height: 24px;
   color: var(--vp-c-text-2);
   text-decoration: none;
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+  transition: color 0.2s;
 }
 
 .page-back:hover {
-  border-color: var(--vp-c-brand-1);
-  background: var(--vp-c-brand-soft);
   color: var(--vp-c-brand-1);
 }
 
 .page-back:focus-visible {
   outline: 2px solid var(--vp-c-brand-1);
   outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* 箭头用 SVG 蒙版画出，线宽可控（文字里的 ← ↑ 太细）；颜色跟品牌色走，深色模式自动适配 */
+.page-back-arrow {
+  flex: none;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-color: var(--vp-c-brand-1);
+  -webkit-mask: var(--page-back-icon) center / contain no-repeat;
+  mask: var(--page-back-icon) center / contain no-repeat;
+  --page-back-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 12H5M12 19l-7-7 7-7'/%3E%3C/svg%3E");
+  animation: page-back-nudge-x 1.6s ease-in-out infinite;
+}
+
+.page-back-arrow.is-up {
+  --page-back-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 19V5M5 12l7-7 7 7'/%3E%3C/svg%3E");
+  animation-name: page-back-nudge-y;
+}
+
+@keyframes page-back-nudge-x {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-4px);
+  }
+}
+
+@keyframes page-back-nudge-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-back-arrow {
+    animation: none;
+  }
 }
 
 .notice-back {

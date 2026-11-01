@@ -26,7 +26,10 @@ const displayDate = computed(() => {
 
 <template>
   <div v-if="isEntry" class="notice-meta">
-    <a class="notice-back page-back" href="/notices/">← 返回通知中心</a>
+    <a class="notice-back page-back" href="/notices/">
+      <span class="page-back-arrow" aria-hidden="true"></span>
+      <span>返回通知中心</span>
+    </a>
     <h1 v-if="page.frontmatter.title" class="notice-meta-title">{{ page.frontmatter.title }}</h1>
     <time v-if="isoDate" class="notice-meta-date" :datetime="isoDate">{{ displayDate }}</time>
   </div>
